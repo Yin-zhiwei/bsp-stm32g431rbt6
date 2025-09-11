@@ -59,8 +59,8 @@ Src/sysmem.c \
 Src/syscalls.c \
 Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c \
 Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.c \
-Hardware/delay/delay.c \
-Hardware/uart/uart.c
+System/delay/delay.c \
+System/uart/uart.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -129,9 +129,9 @@ C_INCLUDES =  \
 -IDrivers/STM32G4xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32G4xx/Include \
 -IDrivers/CMSIS/Include \
--IHardware/sys \
--IHardware/uart \
--IHardware/delay
+-ISystem/sys \
+-ISystem/uart \
+-ISystem/delay
 
 
 # compile gcc flags
