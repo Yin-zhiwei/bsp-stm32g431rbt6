@@ -23,6 +23,10 @@
 /* USER CODE BEGIN Includes */
 #include "uart.h"
 #include "delay.h"
+#include "sys.h"
+
+#include "lcd_init.h"
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,6 +104,11 @@ int main(void)
 
   /* 初始化延时函数 */
   delay_init(170); // 170MHz系统时钟
+
+  /* 初始化TFT LCD */
+  LCD_Init();
+  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,6 +118,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+      // LCD_ShowChinese(10,10,"中景园电子",RED,WHITE,16,0);
+      LCD_ShowString(24,30,"LCD_W:",RED,WHITE,16,0);
+      LCD_ShowIntNum(72,30,LCD_W,3,RED,WHITE,16);
+      LCD_ShowString(24,50,"LCD_H:",RED,WHITE,16,0);
+      LCD_ShowIntNum(72,50,LCD_H,3,RED,WHITE,16);
+      LCD_DrawPoint(10, 10, RED); // 在(10,10)画一个红点
+      LCD_DrawPoint(20, 20, BLUE); // 在(20,20)画一个蓝点
+      delay_ms(500);
+      LCD_DrawPoint(10, 10, WHITE); // 擦除红点
+      LCD_DrawPoint(20, 20, WHITE); // 擦除蓝点
+      delay_ms(500);
+
       LOG_D("系统运行中...");
       /* 延时一小段时间，避免过快打印 */
       delay_ms(2000);
@@ -240,22 +261,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = LCD_SCK_Pin|LCD_RES_Pin|LCD_MOSI_Pin|LCD_BL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_DC_Pin */
   GPIO_InitStruct.Pin = LCD_DC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(LCD_DC_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_CS_Pin */
   GPIO_InitStruct.Pin = LCD_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(LCD_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
+  __HAL_SYSCFG_FASTMODEPLUS_ENABLE(SYSCFG_FASTMODEPLUS_PB6);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
